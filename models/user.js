@@ -9,29 +9,39 @@ var db = require('../db_config/config'); //recupère la classe Db() donnant acce
 var User = function () {
 }; //class User
 
+
+
+// ##################### ----------------------- #####################
+// #####################          API            #####################
+// ##################### ----------------------- #####################
+
 // GET
-//getUserByFirstname
-
-
-//callback to get data from query
-function getQueryResult(){
-
-}
-
-
-User.prototype.getUserByFirstname = function (userToSearch,callback) {  //callback indique que l'on va mettre en parametre une fonction pour recupéré les donnée
+// User by Firstname
+// /api/getUser/:firstname
+User.prototype.getUserByFirstname = function (userToSearch, callback) {  //callback indique que l'on va mettre en parametre une fonction pour recupéré les donnée
     var connection = db.dbConnection(); //recupere la connection à la db créer dans config_db
-    connection.query("SELECT * from myguests where myguests.firstname = '" + userToSearch + "'", function (err, rows, fields, next) {
-        if(err) throw err;
+    connection.query("SELECT * from user where user.firstname = '" + userToSearch + "'", function (err, rows, fields, next) {
+        if (err) throw err;
         console.log('Data received from Db:\n');
         console.log(rows); // results are coming here.
         return callback(rows);
     });
-
 };
 
-//TO DO
-//Other method for USER API . . .
+
+// GET
+// All users
+// /api/getUsers
+User.prototype.getUsers = function (callback) {
+    var connection = db.dbConnection();
+    connection.query("SELECT * from user", function (err, rows, fields, next) {
+        if (err) throw err;
+        console.log('Data received from Db:\n');
+        console.log(rows);
+        return callback(rows);
+    });
+};
+
 
 module.exports = new User();
 
